@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Label, Vec3, UITransform, UIOpacity, Size, v3 } from 'cc';
-import { tween } from "../../tween";
+import { tween, Tween } from "../../tween";
 const { ccclass, property } = _decorator;
 
 @ccclass('TweenReverse')
@@ -17,6 +17,11 @@ export class TweenReverse extends Component {
     grossini: Node | null = null;
 
     private _tweenRunCount = 0;
+    private _currentTween: Tween<Node> | undefined;
+
+    get currentTween(): Tween<Node> {
+        return this._currentTween!;
+    }
 
     start() {
         const sister = this.sister!;
@@ -46,7 +51,7 @@ export class TweenReverse extends Component {
 
         const tAnotherSmallerOpacity2 =tween<UIOpacity>().by(2, { opacity: -75 });
 
-        tween(grossini)
+        this._currentTween = tween(grossini)
             .call(()=>{
                 ++this._tweenRunCount;
                 this.label!.string = `小姐姐1向右移动、图像变宽变大、Alpha变小, 次数: ${this._tweenRunCount}`;
