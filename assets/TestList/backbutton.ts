@@ -1,4 +1,4 @@
-import { EventGamepad, input, Input, _decorator, Component, Node, ScrollView, Vec3, game, Label, director, Director, assetManager, find, Canvas, Layers, JsonAsset, profiler, sys, EditBox, CCBoolean } from "cc";
+import { EventGamepad, input, Input, _decorator, Component, Node, ScrollView, Vec3, game, Label, director, Director, assetManager, find, Canvas, Layers, JsonAsset, profiler, sys, EditBox, CCBoolean, v2 } from "cc";
 import { SceneList } from "./common";
 import { SceneManager } from "./scenelist";
 const { ccclass, property } = _decorator;
