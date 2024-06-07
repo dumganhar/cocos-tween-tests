@@ -3,17 +3,6 @@ import { SceneList } from "./common";
 import { SceneManager } from "./scenelist";
 const { ccclass, property } = _decorator;
 
-declare class AutoTestConfigJson extends JsonAsset {
-    json: {
-        enabled: boolean,
-        server: string,
-        port: number,
-        timeout: number,
-        maxRetryTimes: number,
-        sceneList: string[],
-    }
-}
-
 @ccclass("BackButton")
 export class BackButton extends Component {
     private static _offset = new Vec3();
@@ -42,9 +31,9 @@ export class BackButton extends Component {
     private sceneFold?: string[];
 
     __preload() {
-        const sceneInfo = assetManager.main!.config.scenes;
+        const sceneInfo = (assetManager.main as any).config.scenes;
         const array: string[] = [];
-        sceneInfo.forEach((i) => array.push(i.url));
+        sceneInfo.forEach((i: any) => array.push(i.url));
         array.sort();
         // const autoTestList = this.autoTestConfig!.json.sceneList;
         for (let i = 0;  i< array.length; i++) {
@@ -55,12 +44,7 @@ export class BackButton extends Component {
             if (str.includes('asset-bundle-zip') && !assetManager.downloader.remoteServerAddress) {
                 continue;
             }
-            if (sys.platform === sys.Platform.NX) {
-                if (str.includes('rich-text-long-string-truncation') || str.includes('rich-text-align') || str.includes('geometry-renderer') || str.includes('particle-culling') 
-                || str.includes('boxes-unbatched') || str.includes('network') || str.includes('webview') || str.includes('video-player')) {
-                    continue;
-                }
-            }
+
             if (str.includes('sponza')) {
                 if (sys.platform !== sys.Platform.MOBILE_BROWSER && sys.platform !== sys.Platform.DESKTOP_BROWSER && sys.platform !== sys.Platform.WIN32 && 
                     sys.platform !== sys.Platform.ANDROID && sys.platform !== sys.Platform.IOS && sys.platform !== sys.Platform.MACOS) {
@@ -181,7 +165,7 @@ export class BackButton extends Component {
             BackButton._scrollNode = this.node.parent!.getChildByPath('Canvas/ScrollView') as Node;
             if (BackButton._scrollNode) {
                 BackButton._scrollCom = BackButton._scrollNode.getComponent(ScrollView);
-                BackButton._scrollCom!.scrollToOffset(BackButton.offset, 0.1, true);
+                BackButton._scrollCom!.scrollToOffset(v2(BackButton.offset.x, BackButton.offset.y), 0.1, true);
             }
             BackButton._blockInput.active = false;
         });

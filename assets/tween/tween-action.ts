@@ -126,7 +126,7 @@ export class TweenAction<T> extends ActionInterval {
                 opts.progress = this.progress;
             }
             if (opts.easing && typeof opts.easing === 'string') {
-                const easingName = opts.easing as string;
+                const easingName = opts.easing as TweenEasing;
                 opts.easing = easing[easingName];
 
                 if (!opts.easing) { warnID(1031, easingName); }
@@ -148,11 +148,11 @@ export class TweenAction<T> extends ActionInterval {
             }
             if (value == null || typeof value === 'string') continue;
             // property may have custom easing or progress function
-            let customEasing: any;
+            let customEasing: TweenEasing | ((k: number) => number) | undefined;
             let progress: any;
             if (value.value !== undefined && (value.easing || value.progress)) {
                 if (typeof value.easing === 'string') {
-                    customEasing = easing[value.easing];
+                    customEasing = easing[value.easing as TweenEasing];
                     if (!customEasing) warnID(1031, value.easing as string);
                 } else {
                     customEasing = value.easing;
@@ -209,7 +209,7 @@ export class TweenAction<T> extends ActionInterval {
         const props = this._props;
         const reversed = this._reversed;
         for (const property in props) {
-            const _t: any = workerTarget[property];
+            const _t: any = (workerTarget as any)[property];
             if (_t === undefined) { continue; }
 
             const prop: any = props[property];
@@ -280,7 +280,7 @@ export class TweenAction<T> extends ActionInterval {
                 }
             }
 
-            workerTarget[name] = prop.current;
+            (workerTarget as any)[name] = prop.current;
         }
         if (opts.onUpdate) { opts.onUpdate(workerTarget, t); }
         if (t === 1 && opts.onComplete) { opts.onComplete(workerTarget); }
